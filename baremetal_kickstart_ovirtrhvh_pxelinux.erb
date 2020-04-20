@@ -1,0 +1,22 @@
+<%#
+name: Baremetal Kickstart oVirt-RHVH PXELinux
+snippet: false
+model: ProvisioningTemplate
+kind: PXELinux
+oses:
+- RedHat
+%>
+<%# TODO: Manage bonds %>
+<%
+  subnet = @host.provision_interface.subnet
+  ip = @host.provision_interface.ip
+  mask = subnet.mask
+  gw = subnet.gateway
+  dns = subnet.dns_primary
+%>
+DEFAULT rhvh
+
+LABEL rhvh
+KERNEL <%= @kernel %>
+APPEND initrd=<%= @initrd %> inst.ks=<%= foreman_url("provision") %> inst.stage2=<%= medium_uri %> local_boot_trigger=<%= foreman_url("built") %> <%= subnet.dhcp ? '' : "ip=#{ip}::#{gw}:#{mask}:#{@host}::none nameserver=#{dns}" %> intel_iommu=on
+IPAPPEND 2
