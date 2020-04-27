@@ -4,7 +4,7 @@
 
 * A running Satellite server
 * Some bare metal hosts to provision
-* The RHVH latest ISO from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/415/ver=4.3/rhel---7/4.3/x86_64/product-software) (subscription needed)
+* The latest RHVH ISO from the [Red Hat Customer Portal](https://access.redhat.com/downloads/content/415/ver=4.3/rhel---7/4.3/x86_64/product-software) (subscription needed)
 
 ## Setting up Satellite : the files
 
@@ -87,6 +87,6 @@ After hitting submit, if you are using Satellite's DHCP, you may turn the machin
 If you're not using DHCP, you may download the `Full Host image` ISO file and use it via OOB management interface. 
 
 Assuming your host is named `mynewhost`, the image is available:
-* via WebUI: Hosts -> select the new host -> Boot Disk -> Full Host "mynewhost" image
+* via WebUI: Hosts -> mynewhost -> Boot Disk -> Full Host "mynewhost" image
 * or via API: `curl -k -u mysatuser:mypassword -vL https://satellite.example.com/bootdisk/api/hosts/mynewhost.example.com?full=true -o mynewhost.example.com.iso`
 

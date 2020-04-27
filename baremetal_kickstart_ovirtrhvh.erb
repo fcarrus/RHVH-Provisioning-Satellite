@@ -1,10 +1,10 @@
 <%#
-name: Baremetal Kickstart oVirt-RHVH
-snippet: false
-model: ProvisioningTemplate
 kind: provision
+name: Baremetal Kickstart oVirt-RHVH
+model: ProvisioningTemplate
 oses:
-- RedHat
+- oVirt
+- RHVH
 %>
 <%#
 This template accepts the following parameters:
@@ -48,13 +48,14 @@ end
 
 liveimg --url=<%= liveimg_url %>
 
-<% subnet = @host.subnet -%>
+<% prov_if = @host.provision_interface -%>
+<% subnet = prov_if.subnet -%>
 <% if subnet.respond_to?(:dhcp_boot_mode?) -%>
 <% dhcp = subnet.dhcp_boot_mode? && !@static -%>
 <% else -%>
 <% dhcp = !@static -%>
 <% end -%>
-network --bootproto <%= dhcp ? 'dhcp' : "static --ip=#{@host.ip} --netmask=#{subnet.mask} --gateway=#{subnet.gateway} --nameserver=#{subnet.dns_servers.join(',')}" %> --hostname <%= @host %> --device=<%= @host.mac -%>
+network --bootproto <%= dhcp ? 'dhcp' : "static --ip=#{prov_if.ip} --netmask=#{subnet.mask} --gateway=#{subnet.gateway} --nameserver=#{subnet.dns_servers.join(',')}" %> --hostname <%= @host %> --device=<%= prov_if.mac -%>
 
 rootpw --iscrypted <%= root_pass %>
 <% if host_param_true?('disable-firewall') -%>
