@@ -37,16 +37,7 @@ in which case it would be used without a change.
 %>
 
 install
-<%
-liveimg_name = host_param('liveimg_name') || 'squashfs.img'
-if host_param('kt_activation_keys')
-  liveimg_url = repository_url(liveimg_name, 'isos')
-else
-  liveimg_url = "#{medium_uri}/#{liveimg_name}"
-end
-%>
-
-liveimg --url=<%= liveimg_url %>
+liveimg --url=<%= medium_uri %><%= host_param('liveimg_name') %>
 
 <% prov_if = @host.provision_interface -%>
 <% subnet = prov_if.subnet -%>
